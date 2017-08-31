@@ -29,13 +29,14 @@ project.ext {
 	spockVersion        = '1.1-groovy-2.4'
 	codenarcVersion     = '0.27.0'
 	slf4jVersion        = '1.7.25'
-
+	hikariVersion       = '2.6.3'
+	jdbcVersion         = '6.0.6'
 }
 
 project.with {
 	//project.name is set in the settings.gradle with rootProject.name
 	group                 "it.italiaonline.rnd"
-	version               "0.1.0-SNAPSHOT" // (remove -SNAPSHOT for releases)
+	version               "0.1.0" // (remove -SNAPSHOT for releases)
 	description           "A 'gigawatt' powered project."
 	wrapper.gradleVersion "$gradleVersion"
 }
@@ -70,6 +71,10 @@ dependencies {
 
 	// Slf4j dependencies
 	compile "org.slf4j:slf4j-api:$slf4jVersion"
+
+	// database
+	compile "mysql:mysql-connector-java:$jdbcVersion"
+	compile "com.zaxxer:HikariCP:$hikariVersion"
 
 
 	// We use the awesome Spock testing and specification framework
@@ -121,15 +126,6 @@ uploadArchives {
 jar {
 	// execute check task when create the jar
 	dependsOn 'check'
-}
-
-check {
-	// clean before check
-	dependsOn 'clean'
-	// create the code coverage report
-	dependsOn 'cobertura'
-	// set the correct order for the dep tasks
-	tasks.findByName('cobertura').mustRunAfter 'clean'
 }
 
 // [tasks] definition
