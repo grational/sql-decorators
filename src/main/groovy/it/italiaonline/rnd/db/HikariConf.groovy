@@ -30,8 +30,8 @@ class HikariConf {
 				"'${passwordEnv}' env variable is required"
 			)
 			// performance tuning
-			maximumPoolSize = cores * 2
-			minimumIdle     = cores
+			maximumPoolSize = params.max_pool_size ?: (cores * 2)
+			minimumIdle     = params.min_idle ?: cores
 			params?.datasource_properties?.each { property, value ->
 				addDataSourceProperty(property, value)
 			}
