@@ -20,6 +20,8 @@ plugins {
 	id 'net.saliman.cobertura' version '2.5.0'
 	// integration with nexus repository (and more)
 	id 'maven'
+	// finally! tag version is software version!
+	id 'pl.allegro.tech.build.axion-release' version '1.9.1'
 }
 
 // [general] configuration
@@ -36,7 +38,7 @@ project.ext {
 project.with {
 	//project.name is set in the settings.gradle with rootProject.name
 	group                 "it.italiaonline.rnd"
-	version               "0.1.2" // (remove -SNAPSHOT for releases)
+	version               scmVersion.version
 	description           "A 'gigawatt' powered project."
 	wrapper.gradleVersion "$gradleVersion"
 }
