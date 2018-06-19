@@ -17,9 +17,7 @@ plugins {
 	// groovy code linter
 	id 'codenarc'
 	// test code coverage plugin
-	id 'net.saliman.cobertura' version '2.5.0'
-	// integration with nexus repository (and more)
-	id 'maven'
+	id 'net.saliman.cobertura' version '2.5.4'
 	// finally! tag version is software version!
 	id 'pl.allegro.tech.build.axion-release' version '1.9.1'
 }
@@ -50,21 +48,6 @@ allprojects {
 
 repositories {
 	jcenter()
-
-	// testing nexus server reachability
-	Integer.metaClass.getSeconds = { delegate * 1000 }
-	try {
-		if ( new URL(nexusUrl).getText(connectTimeout: 5.seconds).contains('Sonatype Nexus') ) {
-			logger.warn("Adding maven repositories, nexus <$nexusUrl>")
-			maven { url "${nexusUrl}/content/repositories/snapshots" }
-			maven { url "${nexusUrl}/content/repositories/releases"  }
-		} else {
-			logger.warn("maven repos skipped cause <$nexusUrl> is not reachable!")
-		}
-	} catch (IOException e) {
-		def host = nexusUrl.find($/(?<=https?://)[^/]+/$)
-		logger.warn("Problems adding maven repos <$host>!")
-	}
 }
 
 dependencies {
@@ -101,26 +84,6 @@ codenarc{
 		maxPriority1Violations 0
 		maxPriority2Violations 10
 		maxPriority3Violations 20
-	}
-}
-
-// [maven] upload to http nexus configuration
-configurations {
-	deployerJars
-}
-dependencies {
-	// needed to deploy on nexus via http
-	deployerJars "org.apache.maven.wagon:wagon-http:2.+"
-}
-uploadArchives {
-	repositories.mavenDeployer {
-		configuration = configurations.deployerJars
-		repository(url: "${nexusUrl}/content/repositories/releases") {
-			authentication(userName: nexusUsername, password: nexusPassword)
-		}
-		snapshotRepository(url: "${nexusUrl}/content/repositories/snapshots") {
-			authentication(userName: nexusUsername, password: nexusPassword)
-		}
 	}
 }
 
