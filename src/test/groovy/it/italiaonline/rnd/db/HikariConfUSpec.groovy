@@ -18,7 +18,8 @@ class HikariConfUSpec extends Specification {
 			Map env = [
 				PREFIX_DB_JDBC_URL: 'jdbc_url',
 				PREFIX_DB_USERNAME: 'username',
-				PREFIX_DB_PASSWORD: 'password'
+				PREFIX_DB_PASSWORD: 'password',
+				PREFIX_DB_DRIVER:   'com.mysql.cj.jdbc.Driver'
 			]
 		and:
 			setEnv(env)
@@ -27,9 +28,10 @@ class HikariConfUSpec extends Specification {
 		then:
 			noExceptionThrown()
 		and:
-			db.jdbcUrl  == env.PREFIX_DB_JDBC_URL
-			db.username == env.PREFIX_DB_USERNAME
-			db.password == env.PREFIX_DB_PASSWORD
+			db.jdbcUrl         == env.PREFIX_DB_JDBC_URL
+			db.username        == env.PREFIX_DB_USERNAME
+			db.password        == env.PREFIX_DB_PASSWORD
+			db.driverClassName == env.PREFIX_DB_DRIVER
 	}
 
 	def 'Should correctly set all the Hikari configuration'() {
@@ -37,7 +39,8 @@ class HikariConfUSpec extends Specification {
 			def env = [
 				PREFIX_DB_JDBC_URL: 'jdbc_url',
 				PREFIX_DB_USERNAME: 'username',
-				PREFIX_DB_PASSWORD: 'password'
+				PREFIX_DB_PASSWORD: 'password',
+				PREFIX_DB_DRIVER:   'com.mysql.cj.jdbc.Driver'
 			]
 		and:
 			def cores = Runtime.runtime.availableProcessors()
@@ -60,6 +63,7 @@ class HikariConfUSpec extends Specification {
 				jdbcUrl                              == env.PREFIX_DB_JDBC_URL
 				username                             == env.PREFIX_DB_USERNAME
 				password                             == env.PREFIX_DB_PASSWORD
+				driverClassName                      == env.PREFIX_DB_DRIVER
 				maximumPoolSize                      == (cores * 2)
 				minimumIdle                          == cores
 				dataSourceProperties.'useSSL'        == 'false'
