@@ -23,8 +23,8 @@ class HikariConf {
 			username        = this.getEnv(usernameEnv)
 			password        = this.getEnv(passwordEnv)
 			// performance tuning
-			maximumPoolSize = params.max_pool_size ?: (cores * 2)
-			minimumIdle     = params.min_idle ?: cores
+			maximumPoolSize = params.max_pool_size ?: cores
+			minimumIdle     = params.min_idle ?: 0
 			// additional params
 			params?.datasource_properties?.each { property, value ->
 				addDataSourceProperty(property, value)
