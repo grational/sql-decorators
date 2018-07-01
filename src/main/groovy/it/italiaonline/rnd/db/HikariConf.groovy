@@ -19,9 +19,10 @@ class HikariConf {
 		this.conf = new HikariConfig()
 		this.conf.with {
 			// authentication
-			jdbcUrl         = this.getEnv(urlEnv)
-			username        = this.getEnv(usernameEnv)
-			password        = this.getEnv(passwordEnv)
+			jdbcUrl         = this.getEnv(this.urlEnv)
+			username        = this.getEnv(this.usernameEnv)
+			password        = this.getEnv(this.passwordEnv)
+			driverClassName = this.getEnv(this.driverEnv)
 			// performance tuning
 			maximumPoolSize = params.max_pool_size ?: cores
 			minimumIdle     = params.min_idle ?: 0
