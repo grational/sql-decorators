@@ -10,8 +10,6 @@ plugins {
 	id 'java-library'
 	// support for groovy
 	id 'groovy'
-	// autogenerate eclipse project files
-	id 'eclipse'
 	// create an html index linking every report generated
 	id 'build-dashboard'
 	// view of the project (jars used, navigable source tree)
@@ -26,13 +24,12 @@ plugins {
 
 // [general] configuration
 project.ext {
-	groovyVersion    = '3.0.0'
+	groovyVersion    = '3.0.1'
 	gradleVersion    = '6.2'
 	spockVersion     = '2.0-M2-groovy-3.0'
 	codenarcVersion  = '1.5'
 	slf4jVersion     = '1.7.30'
 	hikariVersion    = '3.4.2'
-	mysqlJdbcVersion = '8.0.15'
 }
 
 project.with {
@@ -54,19 +51,17 @@ repositories {
 
 dependencies {
 	api (
-		"org.codehaus.groovy:groovy-sql:$groovyVersion",
 		"com.zaxxer:HikariCP:$hikariVersion"
 	)
 
 	implementation (
-		"org.codehaus.groovy:groovy-all:$groovyVersion",
+		"org.codehaus.groovy:groovy:$groovyVersion",
 		"org.slf4j:slf4j-api:$slf4jVersion"
 	)
 
 	// We use the awesome Spock testing and specification framework
 	testImplementation (
-		"org.spockframework:spock-core:$spockVersion",
-		"mysql:mysql-connector-java:$mysqlJdbcVersion"
+		"org.spockframework:spock-core:$spockVersion"
 	)
 }
 
