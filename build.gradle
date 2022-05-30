@@ -10,34 +10,36 @@ plugins {
 	id 'java-library'
 	// support for groovy
 	id 'groovy'
-	// create an html index linking every report generated
-	id 'build-dashboard'
-	// view of the project (jars used, navigable source tree)
-	id 'project-report'
 	// groovy code linter
 	id 'codenarc'
 	// test code coverage plugin
-	id 'net.saliman.cobertura' version '3.0.0'
+	id 'net.saliman.cobertura' version '4.0.0'
 	// finally! tag version is software version!
-	id 'pl.allegro.tech.build.axion-release' version '1.11.0'
+	id 'pl.allegro.tech.build.axion-release' version '1.13.9'
 }
 
 // [general] configuration
 project.ext {
-	groovyVersion    = '3.0.1'
-	gradleVersion    = '6.2'
-	spockVersion     = '2.0-M2-groovy-3.0'
-	codenarcVersion  = '1.5'
-	slf4jVersion     = '1.7.30'
-	hikariVersion    = '3.4.2'
+	groovyVersion       = '3.0.10'
+	spockVersion        = '2.1-groovy-3.0'
+	codenarcVersion     = '3.0.1'
+	slf4jVersion        = '1.7.36'
+	hikariVersion       = '3.4.5'
+	mysqlJdbcVersion    = '8.0.29'
+	specSupportVersion  = 'release-0.1.7'
+}
+
+scmVersion {
+	tag {
+		prefix = 'release-'
+	}
 }
 
 project.with {
 	//project.name is set in the settings.gradle with rootProject.name
-	group                 "it.italiaonline.rnd"
+	group                 'it.grational'
 	version               scmVersion.version
 	description           "A 'gigawatt' powered project."
-	wrapper.gradleVersion "$gradleVersion"
 }
 // [crosscompile] source and target java version
 allprojects {
@@ -46,7 +48,8 @@ allprojects {
 }
 
 repositories {
-	jcenter()
+	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -61,12 +64,14 @@ dependencies {
 
 	// We use the awesome Spock testing and specification framework
 	testImplementation (
-		"org.spockframework:spock-core:$spockVersion"
+		"org.spockframework:spock-core:$spockVersion",
+		"com.github.grational:specification-support:$specSupportVersion",
+		"mysql:mysql-connector-java:$mysqlJdbcVersion"
 	)
 }
 
 // codenarc groovy source analyses
-codenarc{
+codenarc {
 	toolVersion = "$codenarcVersion"
 
 	codenarcMain {
@@ -93,8 +98,10 @@ jar {
 }
 
 tasks.withType(Test) {
+	useJUnitPlatform() 
 	maxParallelForks = Runtime.runtime.availableProcessors() / 2
 }
+
 task unitTest(type: Test) {
 	exclude '**/*ISpec*'
 	exclude '**/*FSpec*'
