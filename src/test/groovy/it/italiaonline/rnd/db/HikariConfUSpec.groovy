@@ -19,8 +19,8 @@ class HikariConfUSpec extends Specification {
 		when:
 			def hc = new HikariConf(env_prefix: prefix)
 		then:
-			def error = thrown(NullPointerException)
-			error.message == "'${prefix}_DB_JDBC_URL' env variable is required"
+			def error = thrown(IllegalStateException)
+			error.message == "[HikariConf] The environment variable ${prefix}_DB_JDBC_URL is required"
 	}
 
 	def 'Should correctly handle the set env variables'() {

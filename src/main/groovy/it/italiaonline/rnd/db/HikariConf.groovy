@@ -19,10 +19,10 @@ class HikariConf {
 		this.conf = new HikariConfig()
 		this.conf.with {
 			// authentication
-			jdbcUrl         = this.getEnv(this.urlEnv)
-			username        = this.getEnv(this.usernameEnv)
-			password        = this.getEnv(this.passwordEnv)
-			driverClassName = this.getEnv(this.driverEnv)
+			jdbcUrl         = this.bulletproofEnv(this.urlEnv)
+			username        = this.bulletproofEnv(this.usernameEnv)
+			password        = this.bulletproofEnv(this.passwordEnv)
+			driverClassName = this.bulletproofEnv(this.driverEnv)
 			// performance tuning
 			maximumPoolSize = params.max_pool_size ?: cores
 			minimumIdle     = params.min_idle ?: 0
@@ -33,10 +33,8 @@ class HikariConf {
 		}
 	}
 
-	private String getEnv(String varName) {
-		Objects.requireNonNull (
-			System.getenv()[varName],
-			"'${varName}' env variable is required"
-		)
+	private String bulletproofEnv(String var) {
+		System.getenv()."${var}" ?: { throw new IllegalStateException("[${this.class.simpleName}] The environment variable ${var} is required") }()
 	}
+
 }
