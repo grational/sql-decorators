@@ -1,3 +1,16 @@
 = sql-decorators
 
 A 'gigawatt' powered project.
+
+== Runtime compatibility
+
+The default release uses Java 17 and Groovy 6. Select the version suffix matching the runtime of the consuming application.
+
+[cols="1,1,1",options="header"]
+|===
+| Branch | Version suffix | Runtime
+| `master` | None | Java 17, Groovy 6
+| `groovy-5` | `-g5` | Java 17, Groovy 5
+| `groovy-4` | `-g4` | Java 17, Groovy 4
+| `java-8-groovy-3` | `-j8g3` | Java 8, Groovy 3
+|===
