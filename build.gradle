@@ -46,6 +46,10 @@ codenarc {
 	ignoreFailures = true
 }
 
+tasks.withType(CodeNarc).configureEach {
+	javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+}
+
 codenarcMain { configFile = file('config/codenarc/ruleset.groovy') }
 codenarcTest { configFile = file('config/codenarc/ruleset-test.groovy') }
 
