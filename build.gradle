@@ -8,8 +8,8 @@ plugins {
 }
 
 def targetJava = 17
-def groovyVersion = '6.0.0'
-def spockVersion = '2.5-groovy-6.0'
+def groovyVersion = '4.0.30'
+def spockVersion = '2.4-groovy-4.0'
 
 group = 'com.github.grational'
 version = scmVersion.version
